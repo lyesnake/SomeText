@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<script type="text/javascript">
+    window.onload=function()
+    {
+        function addEvent(ele, event, hanlder) {
+            if (ele.addEventListener) {
+                ele.addEventListener(event, hanlder, false);
+            } else if (ele.attachEvent) {
+                ele.attachEvent("on" + event, hanlder);
+            } else {
+                ele["on" + event] = hanlder;
+            }
+        }
+
+        var oText = document.getElementById("oText");
+        var oBtn = document.getElementById("oBtn");
+        var oTag = document.getElementById("oTag");
+        var oP = document.getElementById("oP");
+//    function addEvent(ele,event,handler){
+//        if(ele.addEventListener){
+//            ele.addEventListener(event,handler,false);
+//        }else if(ele.attachEvent){
+//            ele.attachEvent("on"+event,handler);
+//        }else{
+//            ele["on"+event];
+//        }
+//    }
+
+
+        //添加检查事件
+        addEvent(oText, "keyup", checkItem);
+
+        //添加事件操作
+        addEvent(oBtn, "click", btnHandler);
+
+
+        function checkItem() {
+            var newText = uniqArray(oText.value);
+            oTag.innerHTML = "";
+            oP.innerHTML = "";
+            if(newText.length >10){
+                oTag.innerHTML = "最多只能输入10项数据!";
+            }else if(newText.length == 0){
+                oTag.innerHTML = "请输入你的兴趣爱好!";
+            }else{
+                oTag.innerHTML = "";
+            }
+        }
+
+
+        function trim(str) {
+            return str.replace(/\s+/g, "");
+        }
+
+        function uniqArray(item) {
+            var splitReg = /[\n\u3000\s，；,;、]+/g;
+            var arr = item.split(splitReg).sort(),
+                    newArr = [];
+            if (arr instanceof Array) {
+
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i] = trim(arr[i]);
+                    if ((arr[i] != "")&&(newArr.indexOf(arr[i]) == -1)) {
+                        newArr.push(arr[i]);
+//                        alert(newArr);
+
+                    }
+                }
+            }
+            return newArr;
+        }
+
+
+        function addItem(arr) {
+            var newText = [];
+            oP.innerHTML = '';
+            for (var i = 0; i < arr.length; i++) {
+                newText.push(arr[i]);
+                oP.innerHTML = "您的兴趣爱好是:" + newText.join(",");
+            }
+        }
+
+        function btnHandler() {
+//        var oText = document.getElementById("oText");
+            var hobbits = uniqArray(oText.value);
+
+            if (hobbits.length < 1 || hobbits > 10) {
+                checkItem();
+            } else {
+                addItem(hobbits);
+            }
+        }
+    }
+</script>
+<body>
+
+<section>
+    <label id="oTar">请输入您的兴趣爱好</label>
+    <input id="oText" type="text" >
+    <input id="oBtn" type="button" value="确认">
+    <label id="oTag"></label>
+    <p id="oP"></p>
+
+</section>
+</body>
+</html>

@@ -138,10 +138,10 @@ console.log(b); // [1, 3, 5, 7]
 
 // 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符
 
-var textTrim = " hello I'm a beautiful girl";
-
-var showText = textTrim.trim();
-alert(showText);
+//var textTrim = " hello I'm a beautiful girl";
+//
+//var showText = textTrim.trim();
+//alert(showText);
 
 
 
@@ -321,8 +321,8 @@ function isSiblingNode(element, siblingNode) {
 
 }
 
-//方法二:
-retrun (element.parentNode === siblingNode.parentNode);
+////方法二:
+//retrun (element.parentNode === siblingNode.parentNode);
 
 
 

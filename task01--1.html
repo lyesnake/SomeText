@@ -77,13 +77,33 @@
         }
 
 
+
+
         function addItem(arr) {
-            var newText = [];
+
+            var checkSpan = document.createElement("span");
             oP.innerHTML = '';
+            checkSpan.innerHTML = "您的兴趣是：";
+            oP.appendChild(checkSpan);
             for (var i = 0; i < arr.length; i++) {
-                newText.push(arr[i]);
-                oP.innerHTML = "您的兴趣爱好是:" + newText.join(",");
+
+                 var checkLabel = document.createElement("label");
+                 var checkIteam = document.createElement("input");
+
+                 checkIteam.type="checkbox";
+                 checkIteam.name="hobbit";
+                 checkIteam.checked = "check";
+                 checkIteam.value = arr[i];
+
+
+                checkLabel.appendChild(checkIteam);
+                checkLabel.appendChild(document.createTextNode(arr[i]));
+
+
+                oP.appendChild(checkLabel);
             }
+
+
         }
 
         function btnHandler() {
@@ -102,7 +122,7 @@
 
 <section>
     <label id="oTar">请输入您的兴趣爱好</label>
-    <input id="oText" type="text" >
+    <textarea id="oText" type="text" ></textarea>
     <input id="oBtn" type="button" value="确认">
     <label id="oTag"></label>
     <p id="oP"></p>

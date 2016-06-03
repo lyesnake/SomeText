@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" >
+    <title></title>
+</head>
+<script type="text/javascript">
+//    var d = new Date()
+//    document.write(d.getHours())
+window.onload = function() {
+    function addEvent(ele, event, hanlder) {
+        if (ele.addEventListener) {
+            ele.addEventListener(event, hanlder, false);
+        } else if (ele.attachEvent) {
+            ele.attachEvent("on" + event, hanlder);
+        } else {
+            ele["on" + event] = hanlder;
+        }
+    }
+
+
+
+    var oText = document.getElementById("oText");
+    var oBtn = document.getElementById("oButton");
+    var oP = document.getElementById("oP");
+    var oTip = document.getElementById("oTip");
+
+    //添加检查事件
+    addEvent(oText, "keyup", checkItem);
+
+    //添加按钮事件
+    addEvent(oBtn, "click", btnHanlder);
+
+
+    function btnHanlder() {
+        if (checkItem()) {
+            timeCountDown();
+        } else {
+            alert("THIS DATE INPUT IS WRONG ! PLEASE CHECK OUT!");
+        }
+    }
+
+    function checkItem() {
+        var time = oText.value;
+//        var timeReg = /\d{4}-\d{2}-\d{2}/g;
+
+        var regTag = /\d{4}-\d{2}-\d{2}/g;
+        if ( regTag.test(time) ) {
+
+            var newTime = time.split("-");
+
+            //获取输入框的值
+            var inputDate = new Date(newTime[0], newTime[1] - 1, newTime[2]);
+            var inputYear = parseInt(newTime[0]);
+            var inputMonth = parseInt(newTime[1]);
+            var inputDay = parseInt(newTime[2]);
+
+
+            //获取当前时间的值
+            var nowDate = new Date();
+            var nowYear = parseInt(nowDate.getFullYear());
+            var nowMonth = parseInt(nowDate.getMonth);
+            var nowDate = parseInt(nowDate.getDate);
+
+
+            //创建当前的时间为
+            var cureDate = new Date(nowYear, nowMonth, nowDate);
+
+
+            //设置输入月份对应的日期
+            switch (inputMonth) {
+                case 2:
+                    var monthDay = 28;//默认2月有28天
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    monthDay = 30;
+                    break;
+                default :
+                    monthDay = 31;
+                    break;
+
+            }
+
+
+            //判断输入的年份是否合理
+            if (inputYear < 1970) {
+                oTip.innerHTML = "The YEAR you input is out of range.";
+
+            } else if (inputYear < nowYear) {
+                oTip.innerHTML = "The YEAR you input is out of range.";
+                //判断输入的月份是否合理
+            } else if (inputMonth < 0 || inputMonth > 12) {
+                oTip.innerHTML = "The MONTH you input is out of range.";
+                //判断输入的日期是否合理
+            } else if (inputDay < 0 || inputDay > monthDay) {
+                oTip.innerHTML = "The DATE you input is out of range.";
+            } else {
+                oTip.innerHTML = "";
+                return true;
+            }
+
+
+        } else {
+            oTip.innerHTML = "Pleaes use the form of 'YYYY-MM-DD";
+            return false;
+        }
+    }
+
+    function timeCountDown() {
+        var time = oText.value.split("-");
+        var inputDate = new Date(time[0], time[1] - 1, time[2]);
+        var nowDate = new Date();
+
+
+        //获取当前时间与输入时间的差值
+        var dateCount = inputDate - nowDate;
+
+
+        //获取天数差值
+        var dayCount = Math.floor(dateCount / 86400000);
+
+        //获取小时差值
+        var dateRemain = dateCount -dayCount * 86400000;
+        var hourCount = Math.floor(dateRemain / 3600000);
+
+        //获取分钟数
+        dateRemain -= hourCount * 3600000;
+        var minCount = Math.floor(dateRemain / 60000);
+
+        //获取秒数
+        dateRemain -= minCount * 60000;
+        var secCount = Math.ceil(dateRemain / 1000);
+
+
+
+
+
+
+        //获取倒计时位置，现实倒计时内容
+        oP.innerHTML = "倒计时:" + "离" +
+                time[0] + "年" +
+                time[1] + "月" +
+                time[2] + "日" +
+                "还有" + dayCount + "天" +
+                hourCount + "小时" +
+                minCount + "分钟" +
+                secCount + "秒";
+
+        var interval = setInterval(
+                function () {
+                    timeCountDown();
+                    dateCount -= 1000;
+                },
+                1000
+        );
+
+        if (dateCount <= 0) {
+            clearInterval(interval);
+            oP.innerHTML = "time is up";
+        }
+    }
+
+}
+</script>
+<body>
+<section>
+    <label>请输入时间:</label>
+    <input id="oText" type="text"  placeholder="YYY-MM-DD">
+    <span id="oTip"></span>
+    <input id="oButton" type="button"  value="确认">
+    <p id="oP"></p>
+</section>
+
+</body>
+</html>
